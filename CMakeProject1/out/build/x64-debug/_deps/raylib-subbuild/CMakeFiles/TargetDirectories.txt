@@ -1,0 +1,3 @@
+C:/Users/Merfy/source/repos/The-first-try/CMakeProject1/out/build/x64-debug/_deps/raylib-subbuild/CMakeFiles/raylib-populate.dir
+C:/Users/Merfy/source/repos/The-first-try/CMakeProject1/out/build/x64-debug/_deps/raylib-subbuild/CMakeFiles/edit_cache.dir
+C:/Users/Merfy/source/repos/The-first-try/CMakeProject1/out/build/x64-debug/_deps/raylib-subbuild/CMakeFiles/rebuild_cache.dir

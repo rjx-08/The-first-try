@@ -2,12 +2,17 @@
 #include <vector>
 #include <iostream>
 
+const int SIZE = 20;
+const int CELL_SIZE = 40;          
+const int SCREEN_WIDTH = SIZE * CELL_SIZE;
+const int SCREEN_HEIGHT = SIZE * CELL_SIZE;
+
 enum Direction {
     UP,
     DOWN,
     LEFT,
     RIGHT,
-    STOP
+    STOP // Начальное положение
 };
 
 struct Point {
@@ -16,10 +21,7 @@ struct Point {
 };
 
 void drawField(const std::vector<std::vector<char>>& field) {
-    const int SIZE = 20;
-    const int cellSize = 40;
-    const int screenWidth = SIZE * cellSize;
-    const int screenHeight = SIZE * cellSize;
+    
 
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
@@ -30,54 +32,53 @@ void drawField(const std::vector<std::vector<char>>& field) {
             case 'O': cellColor = GREEN; break;
             case 'o': cellColor = LIME; break;
             case 'F': cellColor = RED; break;      
-            default: cellColor = WHITE;
+            default: cellColor = WHITE;// На всякий случай
             }
-            DrawRectangle(j * cellSize, i * cellSize, cellSize - 1, cellSize - 1, cellColor);
+            DrawRectangle(j * CELL_SIZE, i * CELL_SIZE, CELL_SIZE - 1, CELL_SIZE - 1, cellColor);
         }
     }
 
     for (int i = 0; i <= SIZE; i++) {
-        DrawLine(i * cellSize, 0, i * cellSize, screenHeight, WHITE);
-        DrawLine(0, i * cellSize, screenWidth, i * cellSize, WHITE);
+        DrawLine(i * CELL_SIZE, 0, i * CELL_SIZE, SCREEN_WIDTH, WHITE);//Вертикаль
+        DrawLine(0, i * CELL_SIZE, SCREEN_WIDTH, i * CELL_SIZE, WHITE);//Горизонталь
     }
 }
 
 int main() {
-    const int SIZE = 20;
-    const int cellSize = 40;
-    const int screenWidth = SIZE * cellSize;
-    const int screenHeight = SIZE * cellSize;
+    
 
    
     Direction dir = STOP;
 
-    std::vector<std::vector<char>> field(SIZE, std::vector<char>(SIZE, '.'));
+    int score = 0;
 
-    std::vector<Point> snake;
+    std::vector<std::vector<char>> field(SIZE, std::vector<char>(SIZE, '.'));//Двумерный вектор символов.Внешний вектор имеет размер SIZE(20 строк).Каждая строка - это вектор char, размера SIZE, заполненный символом '.' (пустая клетка).
+    std::vector<Point> snake;//Хранение сегментов
     int centerX = SIZE / 2;
     int centerY = SIZE / 2;
 
-    snake.push_back(Point(centerX, centerY));
-    snake.push_back(Point(centerX - 1, centerY));
-    snake.push_back(Point(centerX - 2, centerY));
+    snake.push_back(Point(centerX, centerY));//Голова
+    snake.push_back(Point(centerX - 1, centerY));//Туловище
+    snake.push_back(Point(centerX - 2, centerY));//Хвост
+
+    Point food = { 15, 15 };  
 
     
     for (int i = 0; i < SIZE; i++) {
-        field[0][i] = '#';
-        field[SIZE - 1][i] = '#';
-        field[i][0] = '#';
-        field[i][SIZE - 1] = '#';
-    }
+        field[0][i] = '#';//Верхняя строка
+        field[SIZE - 1][i] = '#';//Нижняя строка
+        field[i][0] = '#';//Левый столбец
+        field[i][SIZE - 1] = '#';//Правый столбец
+    }//Все это стены(Все полу окуружено решеткой)
 
   
     for (size_t i = 0; i < snake.size(); i++) {
         if (i == 0) field[snake[i].y][snake[i].x] = 'O';
         else field[snake[i].y][snake[i].x] = 'o';
 
-    }
+    }//Размещение змейка на поле
 
-    
-    field[15][15] = 'F';
+    field[food.y][food.x] = 'F';
 
    
     std::cout << "Консольная версия поля:" << std::endl;
@@ -86,12 +87,12 @@ int main() {
             std::cout << field[i][j] << ' ';
         }
         std::cout << std::endl;
-    }
+    }//Проверка провильности размещения(Необязательно)
  
-    InitWindow(screenWidth, screenHeight, "Snake Game - Raylib");
+    InitWindow( SCREEN_WIDTH, SCREEN_HEIGHT, "Snake Game - Raylib");
     SetTargetFPS(60);
     double LastMoveTime = GetTime();
-    float moveDelay = 0.15f;
+    float moveDelay = 0.30f;
 
     while (!WindowShouldClose()) {
 
@@ -101,18 +102,26 @@ int main() {
         if ((IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D)) && dir != LEFT) dir = RIGHT;
 
         double currentTime = GetTime();
-        if (currentTime - LastMoveTime >= moveDelay) {
-            if (dir != STOP) {
-                Point NewHead = snake[0];
+      
+        if (currentTime - LastMoveTime >= moveDelay) {//Проверяет прошло ли достаточно времени с последнего движения
+            if (dir != STOP) {//Двигаем змейку только после начала игры(dir НЕ STOP)
+                Point NewHead = snake[0];//Rопия головы змейки (первый элемент вектора)
                 switch (dir) {
                 case UP:    NewHead.y--; break;
                 case DOWN:  NewHead.y++; break;
                 case LEFT:  NewHead.x--; break;
                 case RIGHT: NewHead.x++; break;
                 default: break;
-                }
+                }//В зависемости от направления изменяем координаты Newhead(Строка/Столбец то увеличивается на 1, то уменьшается)
+                bool atefood = (NewHead.x == food.x && NewHead.y == food.y);
                 snake.insert(snake.begin(), NewHead);
-                snake.pop_back();
+                if (!atefood) {
+                    snake.pop_back();
+                }
+                else {
+                    score += 10;
+                }
+               
             }
             for (int i = 1; i < SIZE - 1; i++) {
                 for (int j = 1; j < SIZE - 1; j++) {
@@ -123,8 +132,6 @@ int main() {
                     char symbol = (i == 0) ? 'O' : 'o';
                     field[snake[i].y][snake[i].x] = symbol;
                 }
-
-                field[15][15] = 'F';
                 LastMoveTime = currentTime;
             }
         }

@@ -3,68 +3,7 @@
 #include <iostream>
 #include <cstdlib>   // для rand() и srand()
 #include <ctime>     
-
-const int SIZE = 20;
-const int CELL_SIZE = 40;
-const int SCREEN_WIDTH = SIZE * CELL_SIZE;
-const int SCREEN_HEIGHT = SIZE * CELL_SIZE;
-
-enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
-    STOP // Начальное положение
-};
-
-struct Point {
-    int x, y;
-    Point(int _x = 0, int _y = 0) : x(_x), y(_y) {}
-};
-
-Point generateRandomFood(const std::vector<Point>& snake, int SIZE) {
-    Point newFood;
-    bool onSnake;
-
-    do {
-        onSnake = false;
-        newFood.x = rand() % (SIZE - 2) + 1;
-        newFood.y = rand() % (SIZE - 2) + 1;
-
-        for (const auto& segment : snake) {
-            if (segment.x == newFood.x && segment.y == newFood.y) {
-                onSnake = true;
-                break;
-            }
-        }
-    } while (onSnake);
-
-    return newFood;
-}
-
-void drawField(const std::vector<std::vector<char>>& field) {
-
-
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-            Color cellColor;
-            switch (field[i][j]) {
-            case '.': cellColor = DARKGRAY; break;
-            case '#': cellColor = BROWN; break;
-            case 'O': cellColor = GREEN; break;
-            case 'o': cellColor = LIME; break;
-            case 'F': cellColor = RED; break;
-            default: cellColor = WHITE;// На всякий случай
-            }
-            DrawRectangle(j * CELL_SIZE, i * CELL_SIZE, CELL_SIZE - 1, CELL_SIZE - 1, cellColor);
-        }
-    }
-
-    for (int i = 0; i <= SIZE; i++) {
-        DrawLine(i * CELL_SIZE, 0, i * CELL_SIZE, SCREEN_WIDTH, WHITE);//Вертикаль
-        DrawLine(0, i * CELL_SIZE, SCREEN_WIDTH, i * CELL_SIZE, WHITE);//Горизонталь
-    }
-}
+#include "SnaceGame.h"
 
 int main() {
 
@@ -174,17 +113,14 @@ int main() {
                 LastMoveTime = currentTime;
             }
 
-
             if (IsKeyPressed(KEY_X)) {
                 gameover = true;
             }
-
 
             BeginDrawing();
             ClearBackground(BLACK);
 
             drawField(field);
-
 
             const char* dirText;
             switch (dir) {
@@ -201,6 +137,7 @@ int main() {
             EndDrawing();
         }
     }
+
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);

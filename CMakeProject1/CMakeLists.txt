@@ -38,7 +38,7 @@ if(NOT SRC_FILES)
 endif()
 
 # --- 3. СОЗДАНИЕ ИСПОЛНЯЕМОГО ФАЙЛА ---
-add_executable(${PROJECT_NAME} ${SRC_FILES})
+add_executable(${PROJECT_NAME} ${SRC_FILES} "SnaceGame.cpp" "SnaceGame.h")
 
 # --- 4. ЛИНКОВКА ---
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib)

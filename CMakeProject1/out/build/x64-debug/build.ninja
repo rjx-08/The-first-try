@@ -49,6 +49,17 @@ cmake_ninja_workdir = C$:\Users\Merfy\source\repos\The-first-try\CMakeProject1\o
 
 build cmake_object_order_depends_target_The-first-try: phony || cmake_object_order_depends_target_glfw cmake_object_order_depends_target_raylib
 
+build CMakeFiles\The-first-try.dir\Class.cpp.obj: CXX_COMPILER__The-first-try_unscanned_Debug C$:\Users\Merfy\source\repos\The-first-try\CMakeProject1\Class.cpp || cmake_object_order_depends_target_The-first-try
+  CONFIG = Debug
+  DEFINES = -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
+  INCLUDES = -IC:\Users\Merfy\source\repos\The-first-try\CMakeProject1\out\build\x64-debug\_deps\raylib-src\src -IC:\Users\Merfy\source\repos\The-first-try\CMakeProject1\out\build\x64-debug\_deps\raylib-src\src\external\glfw\include
+  OBJECT_DIR = CMakeFiles\The-first-try.dir
+  OBJECT_FILE_DIR = CMakeFiles\The-first-try.dir
+  TARGET_COMPILE_PDB = CMakeFiles\The-first-try.dir\
+  TARGET_PDB = The-first-try.pdb
+  TARGET_SUPPORT_DIR = CMakeFiles\The-first-try.dir
+
 build CMakeFiles\The-first-try.dir\SnaceGame.cpp.obj: CXX_COMPILER__The-first-try_unscanned_Debug C$:\Users\Merfy\source\repos\The-first-try\CMakeProject1\SnaceGame.cpp || cmake_object_order_depends_target_The-first-try
   CONFIG = Debug
   DEFINES = -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP
@@ -79,7 +90,7 @@ build CMakeFiles\The-first-try.dir\Source1.cpp.obj: CXX_COMPILER__The-first-try_
 #############################################
 # Link the executable The-first-try.exe
 
-build The-first-try.exe: CXX_EXECUTABLE_LINKER__The-first-try_Debug CMakeFiles\The-first-try.dir\SnaceGame.cpp.obj CMakeFiles\The-first-try.dir\Source1.cpp.obj | _deps\raylib-build\raylib\raylib.lib || _deps\raylib-build\raylib\external\glfw\src\glfw _deps\raylib-build\raylib\raylib.lib
+build The-first-try.exe: CXX_EXECUTABLE_LINKER__The-first-try_Debug CMakeFiles\The-first-try.dir\Class.cpp.obj CMakeFiles\The-first-try.dir\SnaceGame.cpp.obj CMakeFiles\The-first-try.dir\Source1.cpp.obj | _deps\raylib-build\raylib\raylib.lib || _deps\raylib-build\raylib\external\glfw\src\glfw _deps\raylib-build\raylib\raylib.lib
   CONFIG = Debug
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console

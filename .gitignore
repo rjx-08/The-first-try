@@ -3,3 +3,5 @@
 *.ipch
 Debug/
 Release/
+out/
+
